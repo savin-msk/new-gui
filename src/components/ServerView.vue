@@ -25,12 +25,45 @@
 </template>
 
 <script>
+
+import {HTTPS} from '../utils/https-get'
+
 export default {
    name: 'ServerView',
    data () {
      return {
-       msg: 'Server View'
+       msg: []
      }
+   },
+   created ()
+   {
+       HTTPS.get('1.0')
+       .then(function(response){
+           console.log(response)
+           this.msg = response.data
+       })
+       .catch(function(e) {
+           console.log(e)
+       })
+
+       HTTPS.get('1.0/certificates')
+       .then(function(response){
+           console.log(response)
+           this.msg = response.data
+       })
+       .catch(function(e) {
+           console.log(e)
+       })
+
+       HTTPS.get('1.0/containers')
+       .then(function(response){
+           console.log(response)
+           this.msg = response.data
+       })
+       .catch(function(e) {
+           console.log(e)
+       })
+       
    }
 }
 </script>
