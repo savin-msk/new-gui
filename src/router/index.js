@@ -6,8 +6,18 @@ import HomeView from '../components/HomeView.vue'
 Vue.use(Router)
 
 const routes = [
-    { path: '/', name: 'SV', component: ServerView},
-    { path: '/home', name: 'HV', component: HomeView},
+    { 
+      path: '/',
+      name: 'SV',
+      component: ServerView
+    },
+    { 
+      path: '/home',
+      name: 'HV',
+      component: HomeView
+    },
   ]
 
-export default new Router({ routes })
+const router = new Router({ routes })
+
+export default router
