@@ -1,7 +1,9 @@
 <template>
     <div id="server">
-        <b-table striped hover :items="items">
-
+        <b-table striped hover :items="items" caption-top>
+            <template slot="table-caption">
+                lxd server
+            </template>
         </b-table>
     </div>
 </template>
@@ -14,11 +16,11 @@ export default {
        items: []
      }
    },
-   beforeCreate () {
+   created () {
         let servers = this.$store.getters.getServer
         console.log(servers)
         for (var i in servers){
-            this.items.push([servers[i]])
+            this.items.push(["address", servers[i]])
         }
         console.log(this.items)
    }   
