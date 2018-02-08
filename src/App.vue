@@ -10,10 +10,13 @@ import TopNavBar from './components/TopNavBar.vue'
 
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  mounted() {
+    this.$store.dispatch('LOAD_CONTAINERS_LIST')
   },
   components: {
     TopNavBar
