@@ -17,6 +17,15 @@ const actions = {
       }, (err) => {
         console.log(err)
       })
+  },
+
+  LOAD_SERVER_DETAILS: function ({commit}) {
+    console.log('LOAD_SERVER_DETAILS')
+    HTTPS.get('/1.0').then((response) => {
+        commit('SET_SERVER_DETAILS', { list: response.data.metadata.environment.addresses })
+      }, (err) => {
+        console.log(err)
+      })
   }
 }
 
@@ -24,12 +33,18 @@ const mutations = {
   SET_CONTAINERS_LIST: (state, { list }) => {
     console.log('SET_CONTAINERS_LIST')
     state.containers = list
-  }
+  },
+
+  SET_SERVER_DETAILS: (state, { list }) => {
+    console.log('SET_SERVER_DETAILS')
+    state.server = list
+  },
 }
 
 const getters = {
-  containersCount: state => {
-    return state.containers.length
+  getServer: state => {
+    let server = state.server
+    return server
   }
 }
 

@@ -9,8 +9,8 @@
         <b-collapse is-nav id="nav_collapse">
 
             <b-navbar-nav>
-            <b-nav-item :to="'home'">Server</b-nav-item>
-            <b-nav-item :to="'/'">Containers</b-nav-item>
+            <b-nav-item :to="'/'">Server</b-nav-item>
+            <b-nav-item :to="'home'">Containers</b-nav-item>
             <b-nav-item href="#">Load</b-nav-item>
             </b-navbar-nav>
 
