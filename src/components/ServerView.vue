@@ -2,7 +2,7 @@
     <div>
         <b-card-group deck>
             <div id="item" v-for="item in results">
-                <b-card title= "{{ item }}"
+                <b-card :title="item"
                         header="featured"
                         header-tag="header"
                         footer="Card Footer"
