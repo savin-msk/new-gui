@@ -18,7 +18,6 @@ const actions = {
   LOAD_SERVER_DETAILS ({commit}) {
     return new Promise((resolve, reject) => {
         console.log('LOAD_SERVER_DETAILS')
-        commit.SET_LOADING(true)
         HTTPS.get('/1.0').then((response) => {
             const payload = {
                 'addresses': response.data.metadata.environment.addresses,
@@ -36,7 +35,6 @@ const actions = {
             console.log(payload)
             console.log('commit')
             commit('SET_SERVER_DETAILS', { payload })
-            commit.SET_LOADING(false)
             resolve ()
         }, (err) => {
             console.log(err)
@@ -61,9 +59,6 @@ const mutations = {
     state.server_version = payload.server_version
     state.storage = payload.storage
     state.storage_version = payload.storage_version
-  },
-  SET_LOADING: (state, { loading }) => {
-    rootState.loading = loading
   }
 }
 
