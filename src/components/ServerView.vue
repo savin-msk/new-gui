@@ -1,6 +1,5 @@
 <template>
     <div id="server">
-        <div v-if="loading">loading...</div>
         <b-table striped hover :items="items" caption-top>
             <template slot="table-caption">
                 lxd server
@@ -11,8 +10,7 @@
 
 <script>
 import store from '../store'
-
-import { mapState } from 'vuex'
+import {eventHub} from '../utils/eventhub.js'
 
 export default {
     name: 'ServerView',
@@ -24,19 +22,32 @@ export default {
             return (res)
         }
     },
-    // data () {
-    //     return {
-    //         items: []
-    //     }
-    // },
-    // beforeEnterRoute: (to, from, next) => {
-    //     console.log('beforeenter')
-    //     store.dispatch('LOAD_SERVER_DETAILS').then((res) => {
-    //         console.log('load finish')
-    //         next()
-    //     })
-    // },
+    methods: {
+        showSpinner() {
+            console.log('show spinner')
+            this.spinnerVisible = true
+        },
+        hideSpinner() {
+            console.log('hide spinner')
+            this.spinnerVisible = false
+        }
+    },
+    data() {
+        return {
+            spinnerVisible: null
+        }
+    },
     created () {
+        eventHub.$on('before-request', this.showSpinner)
+        eventHub.$on('request-error',  this.hideSpinner)
+        eventHub.$on('after-response', this.hideSpinner)
+        eventHub.$on('response-error', this.hideSpinner)
+    },
+    beforeDestroy () {
+        eventHub.$off('before-request', this.showSpinner)
+        eventHub.$off('request-error',  this.hideSpinner)
+        eventHub.$off('after-response', this.hideSpinner)
+        eventHub.$off('response-error', this.hideSpinner)
     }
 }
 </script>

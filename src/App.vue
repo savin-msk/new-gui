@@ -17,27 +17,16 @@ export default {
   },
   data() {
     return {
-      spinnerVisible: false,
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  mounted () {
+  created () {
     this.$store.dispatch("LOAD_SERVER_DETAILS").then(response => {
       console.log("Got some data, now lets show something in this component")
     }, error => {
       console.error("Got nothing from server. Prompt user to check internet connection and try again")
-      reject(error)
     })
   }
-  // ,
-  // beforeCreate () {
-  //   console.log('loadServer')
-  // 	this.$store.dispatch('LOAD_SERVER_DETAILS').then(() => {
-  //       console.log('load finish')
-  //       console.log(this.$store)
-  //     }
-  //   )
-  // }
 }
 </script>
 

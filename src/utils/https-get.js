@@ -7,6 +7,7 @@ function createAxios() {
     })
     reader.interceptors.request.use(
         conf => {
+            console.log('before-request')
             eventHub.$emit('before-request')
             return conf
         },
@@ -17,6 +18,7 @@ function createAxios() {
     )
     reader.interceptors.response.use(
         response => {
+            console.log('after-request')
             eventHub.$emit('after-response')
             return response
         },
