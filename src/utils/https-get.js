@@ -1,31 +1,31 @@
 import axios from 'axios'
-import {eventHub} from 'eventhub'
+import {eventHub} from './eventhub.js'
 
 function createAxios() {
-    const axios = axios.create({
+    var reader = axios.create({
         baseURL: 'https://lxd.avenu77.ru:9000'
-    });
-    axios.interceptors.request.use(
+    })
+    reader.interceptors.request.use(
         conf => {
-            eventHub.$emit('before-request');
-            return conf;
+            eventHub.$emit('before-request')
+            return conf
         },
         error => {
-            eventHub.$emit('request-error');
-            return Promise.reject(error);
+            eventHub.$emit('request-error')
+            return Promise.reject(error)
         }
-    );
-    axios.interceptors.response.use(
+    )
+    reader.interceptors.response.use(
         response => {
-            eventHub.$emit('after-response');
-            return response;
+            eventHub.$emit('after-response')
+            return response
         },
         error => {
-            eventHub.$emit('response-error');
-            return Promise.reject(error);
+            eventHub.$emit('response-error')
+            return Promise.reject(error)
         }
-    );
-    return axios;
+    )
+    return reader
 }
 
 export const HTTPS =  createAxios()

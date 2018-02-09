@@ -7,7 +7,7 @@
 
 <script>
 import TopNavBar from './components/TopNavBar.vue'
-import { eventHub } from 'utils/eventhub'
+import { eventHub } from './utils/eventhub'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
