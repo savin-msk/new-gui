@@ -7,7 +7,7 @@
 
 <script>
 import TopNavBar from './components/TopNavBar.vue'
-
+import { eventHub } from 'utils/eventhub'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
@@ -17,6 +17,7 @@ export default {
   },
   data() {
     return {
+      spinnerVisible: false,
       msg: 'Welcome to Your Vue.js App'
     }
   },

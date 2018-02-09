@@ -1,8 +1,8 @@
-import { eventHub } from 'eventhub'
 import axios from 'axios'
+import {eventHub} from 'eventhub'
 
 function createAxios() {
-    const axios = Axios.create({
+    const axios = axios.create({
         baseURL: 'https://lxd.avenu77.ru:9000'
     });
     axios.interceptors.request.use(
