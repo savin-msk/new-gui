@@ -1,5 +1,6 @@
 <template>
     <div id="server">
+        <pulse-loader></pulse-loader>
         <b-table striped hover :items="items" caption-top>
             <template slot="table-caption">
                 lxd server
@@ -12,13 +13,15 @@
 import store from '../store'
 import {eventHub} from '../utils/eventhub.js'
 
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+
 export default {
     name: 'ServerView',
     computed: {
-        items () {
+        server () {
             var res = []
             res.push([ "Name", this.$store.state.server.server ])
-            console.log(this.$store)
+            console.log(this.$store.state.server.server)
             return (res)
         }
     },
@@ -32,9 +35,13 @@ export default {
             this.spinnerVisible = false
         }
     },
+    components: {
+        PulseLoader
+    },
     data() {
         return {
-            spinnerVisible: null
+            spinnerVisible: null,
+            items: []
         }
     },
     created () {

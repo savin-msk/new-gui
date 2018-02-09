@@ -34,10 +34,8 @@ const actions = {
                 'storage_version': response.data.metadata.environment.storage_version
             }
             console.log(payload)
-            setTimeout(() => {
-              console.log('commit')
-                commit('SET_SERVER_DETAILS', { payload })
-            }, 1000);
+            console.log('commit')
+            commit('SET_SERVER_DETAILS', { payload })
             commit.SET_LOADING(false)
             resolve ()
         }, (err) => {
