@@ -8,15 +8,25 @@
 <script>
 import TopNavBar from './components/TopNavBar.vue'
 
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   name: 'app',
+  components: {
+    TopNavBar
+  },
   data() {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
   },
-  components: {
-    TopNavBar
+  beforeCreate () {
+    console.log('loadServer')
+  	this.$store.dispatch('LOAD_SERVER_DETAILS').then(() => {
+        console.log('load finish')
+        console.log(this.$store)
+      }
+    )
   }
 }
 </script>

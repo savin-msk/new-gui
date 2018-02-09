@@ -11,9 +11,6 @@ Vue.use(BootstrapVue)
 new Vue({
   el: '#app',
   store,
-  render: h => h(App),
   router,
-  created () {
-  	this.$store.dispatch('LOAD_SERVER_DETAILS')
-  },
+  render: h => h(App),
 })

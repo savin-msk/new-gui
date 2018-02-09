@@ -17,7 +17,8 @@ export default {
      }
    },
    created () {
-        let servers = this.$store.getters.getServer
+       console.log(this.$store)
+        let servers = this.$store.getters.getServerName
         console.log(servers)
         for (var i in servers){
             this.items.push(["address", servers[i]])

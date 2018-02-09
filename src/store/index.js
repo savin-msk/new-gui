@@ -4,55 +4,78 @@ import {HTTPS} from '../utils/https-get'
 
 Vue.use(Vuex)
 
-const state = {
-  server: [],
-  containers: []
-}
-
-const actions = {
-  LOAD_CONTAINERS_LIST: function ({commit}) {
-    console.log('LOAD_CONTAINERS_LIST')
-    HTTPS.get('/1.0/containers').then((response) => {
-        commit('SET_CONTAINERS_LIST', { list: response.data.metadata })
-      }, (err) => {
-        console.log(err)
-      })
+const modServer = {
+  state: {
+    name
   },
-
-  LOAD_SERVER_DETAILS: function ({commit}) {
-    console.log('LOAD_SERVER_DETAILS')
-    HTTPS.get('/1.0').then((response) => {
-        console.log(response.data.metadata.environment.addresses)
-        commit('SET_SERVER_DETAILS', { list: response.data.metadata.environment.addresses })
-      }, (err) => {
-        console.log(err)
-      })
+  actions: {
+    LOAD_SERVER_DETAILS: function ({commit}) {
+      console.log('LOAD_SERVER_DETAILS')
+      HTTPS.get('/1.0').then((response) => {
+          console.log(response.data.metadata.environment.addresses)
+          commit('SET_SERVER_DETAILS', { list: response.data.metadata.environment.addresses })
+        }, (err) => {
+          console.log(err)
+        })
+    }
+  },
+  mutations: {
+    SET_SERVER_DETAILS: (state, { list }) => {
+      console.log('SET_SERVER_DETAILS')
+      console.log(list)
+      state.name = list
+    }
+  },
+  getters: {
+    getServerName: state => {
+      console.log(state)
+      let servername = state.name
+      return servername
+    }
   }
 }
 
-const mutations = {
-  SET_CONTAINERS_LIST: (state, { list }) => {
-    console.log('SET_CONTAINERS_LIST')
-    state.containers = list
+const modContainers = {
+  state: {
+    containers: []
   },
-
-  SET_SERVER_DETAILS: (state, { list }) => {
-    console.log('SET_SERVER_DETAILS')
-    console.log(list)
-    state.server = list
+  actions: {
+    LOAD_CONTAINERS_LIST: function ({commit}) {
+      console.log('LOAD_CONTAINERS_LIST')
+      HTTPS.get('/1.0/containers').then((response) => {
+          commit('SET_CONTAINERS_LIST', { list: response.data.metadata })
+        }, (err) => {
+          console.log(err)
+        })
+    }
   },
-}
-
-const getters = {
-  getServer: state => {
-    let server = state.server
-    return server
+  mutations: {
+    SET_CONTAINERS_LIST: (state, { list }) => {
+      console.log('SET_CONTAINERS_LIST')
+      state.name = list
+    }
   }
 }
 
-export default new Vuex.Store({
+const modules = {
+    server: modServer,
+    containers: modContainers
+}
+
+const state = {}
+
+const actions = {}
+
+const mutations = {}
+
+const getters = {}
+
+const store = new Vuex.Store({
+  modules,
   state,
   actions,
   mutations,
   getters
 })
+
+export default store
