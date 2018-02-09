@@ -1,30 +1,67 @@
+import {HTTPS} from '../../utils/https-get'
+
 const state = {
-  name
+    addresses: [],
+    driver: "",
+    driver_version: "",
+    kernel: "",
+    kernel_architecture: "",
+    kernel_version: "",
+    server: "",
+    server_pid: "",
+    server_version: "",
+    storage: "",
+    storage_version: ""
 }
+
 const actions = {
   LOAD_SERVER_DETAILS: function ({commit}) {
-  console.log('LOAD_SERVER_DETAILS')
-  HTTPS.get('/1.0').then((response) => {
-      console.log(response.data.metadata.environment.addresses)
-      commit('SET_SERVER_DETAILS', { list: response.data.metadata.environment.addresses })
-      }, (err) => {
+    console.log('LOAD_SERVER_DETAILS')
+    HTTPS.get('/1.0').then((response) => {
+      const payload = {
+        'addresses': response.data.metadata.environment.addresses,
+        'driver': response.data.metadata.environment.driver,
+        'driver_version': response.data.metadata.environment.driver_version,
+        'kernel': response.data.metadata.environment.kernel,
+        'kernel_architecture': response.data.metadata.environment.kernel_architecture,
+        'kernel_version': response.data.metadata.environment.kernel_version,
+        'server': response.data.metadata.environment.server,
+        'server_pid': response.data.metadata.environment.server_pid,
+        'server_version': response.data.metadata.environment.server_version,
+        'storage': response.data.metadata.environment.storage,
+        'storage_version': response.data.metadata.environment.storage_version
+      }
+      console.log(payload)
+      commit('SET_SERVER_DETAILS', { payload })
+    }, (err) => {
       console.log(err)
     })
   }
 }
 
 const mutations = {
-  SET_SERVER_DETAILS: (state, { list }) => {
+  SET_SERVER_DETAILS: (state, { payload }) => {
     console.log('SET_SERVER_DETAILS')
-    console.log(list)
-    state.name = list
+    console.log(payload)
+    state.addresses = payload.addresses
+    state.driver = payload.driver
+    state.driver_version = payload.driver_version
+    state.kernel = payload.kernel
+    state.kernel_architecture = payload.kernel_architecture
+    state.kernel_version = payload.kernel_version
+    state.server = payload.server
+    state.server_pid = payload.server_pid
+    state.server_version = payload.server_version
+    state.storage = payload.storage
+    state.storage_version = payload.storage_version
   }
 }
 
 const getters = {
   getServerName: state => {
-    console.log(state)
-    let servername = state.name
+    console.log('getServer')
+    console.log(state.server)
+    let servername = state.server
     return servername
   }
 }

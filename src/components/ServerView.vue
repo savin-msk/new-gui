@@ -10,21 +10,18 @@
 
 <script>
 export default {
-   name: 'ServerView',
-   data() {
-     return {
-       items: []
-     }
-   },
-   created () {
-       console.log(this.$store)
+    name: 'ServerView',
+    data() {
+        return {
+            items: []
+        }
+    },
+    created () {
+        console.log(this.$store)
         let servers = this.$store.getters.getServerName
         console.log(servers)
-        for (var i in servers){
-            this.items.push(["address", servers[i]])
-        }
-        console.log(this.items)
-   }   
+        this.items.push(["Name", servers])
+    }   
 }
 </script>
 
