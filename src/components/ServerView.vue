@@ -17,10 +17,11 @@ import { mapState } from 'vuex'
 export default {
     name: 'ServerView',
     computed: {
-        ...mapState(['loading']),
         items () {
+            var res = []
+            res.push([ "Name", this.$store.state.server.server ])
             console.log(this.$store)
-            return (["Name", this.$store.getters.getServerName])
+            return (res)
         }
     },
     // data () {
@@ -36,12 +37,6 @@ export default {
     //     })
     // },
     created () {
-        console.log('created')
-        console.log(store)
-        var servers = store.getters.getServerName
-        console.log('servers')
-        console.log(servers)
-        //this.items.push(["Name", servers])
     }
 }
 </script>

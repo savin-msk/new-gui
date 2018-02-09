@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import axios from 'axios'
 import ServerView from '../components/ServerView.vue'
 import HomeView from '../components/HomeView.vue'
 
@@ -19,15 +20,23 @@ const routes = [
         next()
       },
       beforeRouteEnter: (to, from, next) => {
-        console.log('beforeenter')
-        vm.store.dispatch('LOAD_SERVER_DETAILS').then((res) => {
-            console.log('before load finish')
-            console.log(res)
-            next()
+        console.log('beforeroute')
+        axios.get(`/1.0`).then((response) => {
+          next(vm => Object.assign(vm.store.server.server, response.data.metadata.environment.server))
         })
-        next()
       }
     },
+      // })
+      // beforeRouteEnter: (to, from, next) => {
+      //   console.log('beforeenter')
+      //   vm.store.dispatch('LOAD_SERVER_DETAILS').then((res) => {
+      //       console.log('before load finish')
+      //       console.log(res)
+      //       next()
+      //   })
+      //   next()
+      // }
+    // },
     { 
       path: '/home',
       name: 'HV',

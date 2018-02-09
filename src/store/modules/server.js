@@ -35,6 +35,7 @@ const actions = {
             }
             console.log(payload)
             setTimeout(() => {
+              console.log('commit')
                 commit('SET_SERVER_DETAILS', { payload })
             }, 1000);
             commit.SET_LOADING(false)
