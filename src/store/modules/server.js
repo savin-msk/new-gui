@@ -15,26 +15,34 @@ const state = {
 }
 
 const actions = {
-  LOAD_SERVER_DETAILS: function ({commit}) {
-    console.log('LOAD_SERVER_DETAILS')
-    HTTPS.get('/1.0').then((response) => {
-      const payload = {
-        'addresses': response.data.metadata.environment.addresses,
-        'driver': response.data.metadata.environment.driver,
-        'driver_version': response.data.metadata.environment.driver_version,
-        'kernel': response.data.metadata.environment.kernel,
-        'kernel_architecture': response.data.metadata.environment.kernel_architecture,
-        'kernel_version': response.data.metadata.environment.kernel_version,
-        'server': response.data.metadata.environment.server,
-        'server_pid': response.data.metadata.environment.server_pid,
-        'server_version': response.data.metadata.environment.server_version,
-        'storage': response.data.metadata.environment.storage,
-        'storage_version': response.data.metadata.environment.storage_version
-      }
-      console.log(payload)
-      commit('SET_SERVER_DETAILS', { payload })
-    }, (err) => {
-      console.log(err)
+  LOAD_SERVER_DETAILS ({commit}) {
+    return new Promise((resolve, reject) => {
+        console.log('LOAD_SERVER_DETAILS')
+        commit.SET_LOADING(true)
+        HTTPS.get('/1.0').then((response) => {
+            const payload = {
+                'addresses': response.data.metadata.environment.addresses,
+                'driver': response.data.metadata.environment.driver,
+                'driver_version': response.data.metadata.environment.driver_version,
+                'kernel': response.data.metadata.environment.kernel,
+                'kernel_architecture': response.data.metadata.environment.kernel_architecture,
+                'kernel_version': response.data.metadata.environment.kernel_version,
+                'server': response.data.metadata.environment.server,
+                'server_pid': response.data.metadata.environment.server_pid,
+                'server_version': response.data.metadata.environment.server_version,
+                'storage': response.data.metadata.environment.storage,
+                'storage_version': response.data.metadata.environment.storage_version
+            }
+            console.log(payload)
+            setTimeout(() => {
+                commit('SET_SERVER_DETAILS', { payload })
+            }, 1000);
+            commit.SET_LOADING(false)
+            resolve ()
+        }, (err) => {
+            console.log(err)
+            reject(err)
+        })
     })
   }
 }
@@ -54,6 +62,9 @@ const mutations = {
     state.server_version = payload.server_version
     state.storage = payload.storage
     state.storage_version = payload.storage_version
+  },
+  SET_LOADING: (state, { loading }) => {
+    rootState.loading = loading
   }
 }
 

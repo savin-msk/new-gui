@@ -11,7 +11,9 @@ const modules = {
     containers: modContainers
 }
 
-const state = {}
+const state = {
+  loading: false
+}
 
 const actions = {}
 
