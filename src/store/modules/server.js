@@ -47,11 +47,8 @@ const actions = {
     return new Promise((resolve, reject) => {
       console.log('LOAD_CONTAINERS_URL')
         HTTPS.get('/1.0/containers').then((response) => {
-            const payload = []
-            for (var i in response.metadata) {
-              payload.push(response.metadata[i])
-            }
-            console.log(payload)
+            console.log('LOAD_CONTAINERS_URL')
+            let payload = response.data.metadata
             commit('SET_CONTAINERS_URL', { payload })
             resolve ()
         }, (err) => {
@@ -65,7 +62,6 @@ const actions = {
 const mutations = {
   SET_SERVER_DETAILS: (state, { payload }) => {
     console.log('SET_SERVER_DETAILS')
-    console.log(payload)
     state.addresses = payload.addresses
     state.driver = payload.driver
     state.driver_version = payload.driver_version
@@ -81,7 +77,6 @@ const mutations = {
   },
   SET_CONTAINERS_URL: (state, { payload }) => {
     console.log('SET_CONTAINERS_URL')
-    console.log(payload)
     state.containersURL = payload
   }
 }
@@ -89,13 +84,11 @@ const mutations = {
 const getters = {
   getServerDetails: state => {
     console.log('getServerDetails')
-    console.log(state)
     let result = state
     return result
   },
   getContainersURL: state => {
     console.log('getContainersURL')
-    console.log(state.containersURL)
     let result = state.containersURL
     return result
   }
