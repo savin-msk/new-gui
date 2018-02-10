@@ -1,5 +1,16 @@
 import {HTTPS} from '../../utils/https-get'
 
+const container = {
+    name: '',
+    config: {},
+    devices: {},
+    profiles: {},
+    description: '',
+    created_at: '',
+    status: '',
+    status_code: ''
+}
+
 const state = {
     containers: []
 }
