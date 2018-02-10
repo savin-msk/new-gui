@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import {HTTPS} from '../utils/https-get'
 import modServer from './modules/server'
-import modContainers from './modules/containers'
+import modContainer from './modules/container'
 
 Vue.use(Vuex)
 
 const modules = {
     server: modServer,
-    containers: modContainers
+    containers: modContainer
 }
 
 const state = {

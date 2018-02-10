@@ -33,8 +33,6 @@
 import store from '../store'
 import {eventHub} from '../utils/eventhub.js'
 
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-
 export default {
     name: 'ServerView',
     methods: {
@@ -50,7 +48,7 @@ export default {
     data() {
         return {
             items: [],
-            loading: false,
+            loading: false
         }
     },
     created () {

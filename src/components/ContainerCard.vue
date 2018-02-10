@@ -4,7 +4,7 @@
                 header-tag="header"
                 footer="Card Footer"
                 footer-tag="footer"
-                title="title">
+                :title="containerURL.name">
             <p class="card-text">Name</p>
             <b-button href="#" variant="primary">Go somewhere</b-button>
         </b-card>
@@ -15,10 +15,24 @@
 export default {
     name: 'ContainerCard',
     props: {
-        containerDetails: {}
+        containerURL: ""
     },
-    data() {},
-    created () {}
+    methods: {
+        fetchData () {
+            console.log(this.$store)
+            this.containerDetails = this.$store.state.containers[0]
+            console.log(this.containerDetails)
+        }
+    },
+    data () {
+        return {
+            containerDetails: {},
+            loading: false
+        }
+    },
+    created () {
+        this.fetchData()
+    }
 }
 </script>
 
