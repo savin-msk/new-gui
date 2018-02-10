@@ -11,7 +11,9 @@ const state = {
     server_pid: "",
     server_version: "",
     storage: "",
-    storage_version: ""
+    storage_version: "",
+    config: {},
+    containersURL: []
 }
 
 const actions = {
@@ -30,11 +32,27 @@ const actions = {
                 'server_pid': response.data.metadata.environment.server_pid,
                 'server_version': response.data.metadata.environment.server_version,
                 'storage': response.data.metadata.environment.storage,
-                'storage_version': response.data.metadata.environment.storage_version
+                'storage_version': response.data.metadata.environment.storage_version,
+                'config': response.data.metadata.environment.config
+            }
+            commit('SET_SERVER_DETAILS', { payload })
+            resolve ()
+        }, (err) => {
+            console.log(err)
+            reject(err)
+        })
+    })
+  },
+  LOAD_CONTAINERS_URL ({commit}) {
+    return new Promise((resolve, reject) => {
+      console.log('LOAD_CONTAINERS_URL')
+        HTTPS.get('/1.0/containers').then((response) => {
+            const payload = []
+            for (var i in response.metadata) {
+              payload.push(response.metadata[i])
             }
             console.log(payload)
-            console.log('commit')
-            commit('SET_SERVER_DETAILS', { payload })
+            commit('SET_CONTAINERS_URL', { payload })
             resolve ()
         }, (err) => {
             console.log(err)
@@ -58,16 +76,28 @@ const mutations = {
     state.server_pid = payload.server_pid
     state.server_version = payload.server_version
     state.storage = payload.storage
-    state.storage_version = payload.storage_version
+    state.storage_version = payload.storage_version,
+    state.config = payload.config
+  },
+  SET_CONTAINERS_URL: (state, { payload }) => {
+    console.log('SET_CONTAINERS_URL')
+    console.log(payload)
+    state.containersURL = payload
   }
 }
 
 const getters = {
-  getServerName: state => {
-    console.log('getServer')
-    console.log(state.server)
-    let servername = state.server
-    return servername
+  getServerDetails: state => {
+    console.log('getServerDetails')
+    console.log(state)
+    let result = state
+    return result
+  },
+  getContainersURL: state => {
+    console.log('getContainersURL')
+    console.log(state.containersURL)
+    let result = state.containersURL
+    return result
   }
 }
 
