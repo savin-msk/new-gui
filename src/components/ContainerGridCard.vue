@@ -4,7 +4,7 @@
             <p>Loading...</p>
         </div>
         <div v-if="!loading">
-            <b-table striped hover :items="items"  :fields="fields" caption-top>
+            <b-table striped hover :items="items" :fields="fields" caption-top>
                 <template slot="table-caption">
                     Containers
                 </template>
@@ -20,38 +20,59 @@ import { mapGetters } from 'vuex'
 
 import store from '../store'
 
-export default {
-    name: 'ContainerGridCard',
-    methods: {
-        fetchData () {
-            this.loading = true
-            for (let i in this.containerUrl) {
-                let rowitem = {}
-                HTTPS.get(this.containerUrl[i]).then((response) => {
-                    let urlArray = this.containerUrl[i].split('/')
-                    rowitem.name = urlArray[urlArray.length-1]
-                    rowitem.state = response.data.metadata.status
-                    rowitem.snapshots = ''
-                    this.containerDetails = response.data.metadata
-                })
-                HTTPS.get(this.stateUrl[i]).then((response) => {
+function reqUrl(req) {
+    return new Promise((resolve, reject) => {
+    HTTPS.get(req)
+        .then(response => resolve(response))
+        .catch(() => reject)
+  })
+}
+
+function getContdata(context) {
+    return new Promise ((resolve, reject) => {
+        console.log('getContdata')
+        console.log(context)
+        self = context
+        for (let i in self.containerUrl) {
+            let rowitem = {}
+            reqUrl(self.containerUrl[i]).then((response) => {
+                let urlArray = self.containerUrl[i].split('/')
+                rowitem.name = urlArray[urlArray.length-1]
+                rowitem.state = response.data.metadata.status
+                self.containerDetails = response.data.metadata
+                reqUrl(self.stateUrl[i]).then((response) => {
                     if (response.data.metadata.network != null) {
+                        console.log('if true')
                         let networks = response.data.metadata.network
                         let ifName = Object.keys(networks)[0]
                         rowitem.IPV4 = networks[ifName].addresses[0].address
                         rowitem.IPV6 = networks[ifName].addresses[1].address
                     }
                     else {
+                        console.log('if false')
                         rowitem.IPV4 = ''
                         rowitem.IPV6 = ''
                     }
                 })
-                console.log(rowitem)
-                this.items.push(rowitem)
-            }
-            console.log('this.items')
+            })
+            console.log(rowitem)    
+            self.items.push(rowitem)
+        }
+        resolve()
+    })
+}
+
+export default {
+    name: 'ContainerGridCard',
+    methods: {
+        fetchData () {
+            this.loading = true
+            let prom = new Promise ((resolve, reject) => {
+                getContdata(this).then(
+                    this.loading = false
+                )
+            })
             console.log(this.items)
-            this.loading = false
         }
     },
     computed: {
@@ -65,7 +86,7 @@ export default {
     data() {
         return {
             items: [],
-            fields: [ 'name', 'state', 'IPV4', 'IPV6', 'snapshots' ],
+            fields: [ 'name', 'state', 'inet4', 'inet6'],
             containersURL: [],
             loading: false
         }
