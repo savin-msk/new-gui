@@ -13,7 +13,8 @@ const state = {
     storage: "",
     storage_version: "",
     config: {},
-    containersURL: []
+    containersURL: [],
+    containersStateURL: []
 }
 
 const actions = {
@@ -45,6 +46,8 @@ const actions = {
   },
   LOAD_CONTAINERS_URL ({commit}) {
     return new Promise((resolve, reject) => {
+      console.log('Cleaning Container\'s URLs')
+      //commit('SET_CONTAINERS_URL', {})
       console.log('LOAD_CONTAINERS_URL')
         HTTPS.get('/1.0/containers').then((response) => {
             console.log('LOAD_CONTAINERS_URL')
@@ -78,6 +81,9 @@ const mutations = {
   SET_CONTAINERS_URL: (state, { payload }) => {
     console.log('SET_CONTAINERS_URL')
     state.containersURL = payload
+    for (let i in state.containersURL) {
+      state.containersStateURL[i] = state.containersURL[i] + '/state'
+    }
   }
 }
 
@@ -90,6 +96,11 @@ const getters = {
   getContainersURL: state => {
     console.log('getContainersURL')
     let result = state.containersURL
+    return result
+  },
+  getContainersStateURL: state => {
+    console.log('getContainersStateURL')
+    let result = state.containersStateURL
     return result
   }
 }

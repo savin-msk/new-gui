@@ -25,6 +25,7 @@
                     lxd server
                 </template>
             </b-table>
+            <container-grid-card></container-grid-card>
         </div>
     </div>
 </template>
@@ -33,17 +34,25 @@
 import store from '../store'
 import {eventHub} from '../utils/eventhub.js'
 
+import ContainerGridCard from './ContainerGridCard.vue'
+
 export default {
     name: 'ServerView',
     methods: {
         fetchData () {
             this.loading = true
-            this.$store.dispatch("LOAD_SERVER_DETAILS").then(response => {
-                this.loading = false
+            this.$store.dispatch('LOAD_SERVER_DETAILS').then(response => {
                 console.log(this.$store)
-                this.items.push([ "Name", this.$store.state.server.server])
+                this.items.push([ 'Name', this.$store.state.server.server])
+            })
+            this.$store.dispatch('LOAD_CONTAINERS_URL').then(response => {
+                console.log(this.$store)
+                this.loading = false
             })
         }
+    },
+    components: {
+        'ContainerGridCard': ContainerGridCard
     },
     data() {
         return {
