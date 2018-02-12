@@ -8,6 +8,18 @@
                 <template slot="table-caption">
                     Containers
                 </template>
+                <template slot="actions" slot-scope="cell">
+                    <b-button size="sm" class="mr-2">
+                        Start
+                    </b-button>
+                    <b-button size="sm" class="mr-2">
+                        Config
+                    </b-button>
+                    <b-button size="sm" class="mr-2">
+                        Snapshot
+                    </b-button>
+                    
+                </template>
             </b-table>
         </div>
     </div>
@@ -111,7 +123,7 @@ export default {
     data() {
         return {
             items: [],
-            fields: [ 'name', 'state', 'inet4', 'inet6', 'snapshot' ],
+            fields: [ 'name', 'state', 'inet4', 'inet6', 'snapshot', 'actions' ],
             containersURL: [],
             loading: false
         }
