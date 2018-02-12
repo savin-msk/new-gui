@@ -9,7 +9,7 @@
                     Containers
                 </template>
                 <template slot="actions" slot-scope="cell">
-                    <b-button size="sm" class="mr-2">
+                    <b-button size="sm" class="mr-2" v-on:click="btnClick">
                         Start
                     </b-button>
                     <b-button size="sm" class="mr-2">
@@ -53,7 +53,7 @@ export default {
             console.log(this.items)
         },
         
-        getContdata() {
+        getContdata () {
             return new Promise ((resolve, reject) => {
                 console.log('getContdata')
                 for (let i in this.containerUrl) {
@@ -107,6 +107,10 @@ export default {
                 console.log(this.items)
                 resolve()
             })
+        },
+
+        btnClick () {
+            console.log('btn click')
         }
     },
     computed: {
