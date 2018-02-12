@@ -16,7 +16,6 @@
 <script>
 import { HTTPS } from '../utils/https-get'
 import { eventHub } from '../utils/eventhub.js'
-import { mapGetters } from 'vuex'
 
 import store from '../store'
 
@@ -28,51 +27,74 @@ function reqUrl(req) {
   })
 }
 
-function getContdata(context) {
-    return new Promise ((resolve, reject) => {
-        console.log('getContdata')
-        console.log(context)
-        self = context
-        for (let i in self.containerUrl) {
-            let rowitem = {}
-            reqUrl(self.containerUrl[i]).then((response) => {
-                let urlArray = self.containerUrl[i].split('/')
-                rowitem.name = urlArray[urlArray.length-1]
-                rowitem.state = response.data.metadata.status
-                self.containerDetails = response.data.metadata
-                reqUrl(self.stateUrl[i]).then((response) => {
-                    if (response.data.metadata.network != null) {
-                        console.log('if true')
-                        let networks = response.data.metadata.network
-                        let ifName = Object.keys(networks)[0]
-                        rowitem.IPV4 = networks[ifName].addresses[0].address
-                        rowitem.IPV6 = networks[ifName].addresses[1].address
-                    }
-                    else {
-                        console.log('if false')
-                        rowitem.IPV4 = ''
-                        rowitem.IPV6 = ''
-                    }
-                })
-            })
-            console.log(rowitem)    
-            self.items.push(rowitem)
-        }
-        resolve()
-    })
-}
-
 export default {
     name: 'ContainerGridCard',
     methods: {
         fetchData () {
+            console.log('loading true')
             this.loading = true
-            let prom = new Promise ((resolve, reject) => {
-                getContdata(this).then(
+                this.getContdata().then(() => {
+                    console.log('getContdata finished')
+                    console.log('loading false')
                     this.loading = false
-                )
-            })
+                })
             console.log(this.items)
+        },
+        
+        getContdata() {
+            return new Promise ((resolve, reject) => {
+                console.log('getContdata')
+                for (let i in this.containerUrl) {
+                    let rowitem = {}
+
+                    let query1 = reqUrl(this.containerUrl[i]).then((response) => {
+                        console.log('cont url')
+                        let urlArray = this.containerUrl[i].split('/')
+                        rowitem.name = urlArray[urlArray.length-1]
+                        rowitem.state = response.data.metadata.status
+                        this.containerDetails = response.data.metadata
+                    })
+                    
+                    let query2 = reqUrl(this.stateUrl[i]).then((response) => {
+                        if (response.data.metadata.network != null) {
+                            console.log('if true')
+                            let networks = response.data.metadata.network
+                            let ifName = Object.keys(networks)[0]
+                            rowitem.inet4 = networks[ifName].addresses[0].address
+                            rowitem.inet6 = networks[ifName].addresses[1].address
+                        }
+                        else {
+                            console.log('if false')
+                            rowitem.inet4 = ''
+                            rowitem.inet6 = ''
+                        }
+                    })
+
+                    let query3 = reqUrl(this.snapshotsUrl[i]).then((response) => {
+                        if (response.data.metadata.length != 0) {
+                            console.log('query3')
+                            console.log(response.data.metadata)
+                            let url = response.data.metadata[0]
+                            let name = url.split('/')
+                            rowitem.snapshot = name[name.length-1]
+                        }
+                        else {
+                            console.log('if false')
+                            rowitem.snapshot = ''
+                        }
+                    })
+
+                    Promise.all([query1, query2, query3]).then(() => {
+                        console.log('All ajax calls finished')
+                        console.log(rowitem)    
+                        this.items.push(rowitem)
+                    }).catch(function(err){
+                        console.log('There is an error', err)
+                    })
+                }
+                console.log(this.items)
+                resolve()
+            })
         }
     },
     computed: {
@@ -81,12 +103,15 @@ export default {
         },
         stateUrl () {
             return this.$store.getters.getContainersStateURL
+        },
+        snapshotsUrl () {
+            return this.$store.getters.getContainersSnapshotsURL
         }
     },
     data() {
         return {
             items: [],
-            fields: [ 'name', 'state', 'inet4', 'inet6'],
+            fields: [ 'name', 'state', 'inet4', 'inet6', 'snapshot' ],
             containersURL: [],
             loading: false
         }

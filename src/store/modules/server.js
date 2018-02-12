@@ -14,7 +14,8 @@ const state = {
     storage_version: "",
     config: {},
     containersURL: [],
-    containersStateURL: []
+    containersStateURL: [],
+    containersSnapshotsURL: []
 }
 
 const actions = {
@@ -83,6 +84,7 @@ const mutations = {
     state.containersURL = payload
     for (let i in state.containersURL) {
       state.containersStateURL[i] = state.containersURL[i] + '/state'
+      state.containersSnapshotsURL[i] = state.containersURL[i] + '/snapshots'
     }
   }
 }
@@ -101,6 +103,11 @@ const getters = {
   getContainersStateURL: state => {
     console.log('getContainersStateURL')
     let result = state.containersStateURL
+    return result
+  },
+  getContainersSnapshotsURL: state => {
+    console.log('getContainersSnapshotsURL')
+    let result = state.containersSnapshotsURL
     return result
   }
 }
