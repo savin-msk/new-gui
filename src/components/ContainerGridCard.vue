@@ -9,10 +9,10 @@
                     Containers
                 </template>
                 <template slot="actions" slot-scope="cell">
-                    <b-button size="sm" class="mr-2" v-on:click="btnClick">
+                    <b-button size="sm" class="mr-2" v-on:click="startContainer">
                         Start
                     </b-button>
-                    <b-button size="sm" class="mr-2">
+                    <b-button size="sm" class="mr-2" v-on:click="stopContainer">
                         Config
                     </b-button>
                     <b-button size="sm" class="mr-2">
@@ -53,7 +53,7 @@ export default {
             console.log(this.items)
         },
         
-        getContdata () {
+        getContdata() {
             return new Promise ((resolve, reject) => {
                 console.log('getContdata')
                 for (let i in this.containerUrl) {
@@ -108,9 +108,11 @@ export default {
                 resolve()
             })
         },
-
-        btnClick () {
-            console.log('btn click')
+        startContainer () {
+            HTTPS.put('/1.0/containers/nodejs/state', { "action": "start" })
+        },
+        stopContainer () {
+            HTTPS.put('/1.0/containers/nodejs/state', { "action": "stop" })
         }
     },
     computed: {
