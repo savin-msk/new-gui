@@ -2,6 +2,10 @@ module.exports = {
     "env": {
         "browser": true
     },
+    "ecmaFeatures": {
+        "modules": true
+    },
+    "parser": "babel-eslint",
     "extends": "eslint:recommended",
     "rules": {
         "indent": [
