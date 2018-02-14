@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <top-nav-bar></top-nav-bar>
+    <!-- <top-nav-bar></top-nav-bar> -->
     <router-view></router-view>
   </div>
 </template>
@@ -31,30 +31,17 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 0px;
-}
+  /* Import Font Awesome Icons Set */
+  $fa-font-path: '~font-awesome/fonts/';
+  @import '~font-awesome/css/font-awesome.min.css';
+  /* Import Simple Line Icons Set */
+  $simple-line-font-path: '~simple-line-icons/fonts/';
+  @import '~simple-line-icons/css/simple-line-icons.css';
+  /* Import Bootstrap Vue Styles */
+  @import '~bootstrap-vue/dist/bootstrap-vue.css';
+</style>
 
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0px;
-}
-
-a {
-  color: #42b983;
-}
+<style lang="scss">
+  // Import Main styles for this application
+  @import './scss/style';
 </style>
