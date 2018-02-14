@@ -45,15 +45,16 @@ module.exports = {
             path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, './scss')
         ],
-        loaders: ["style-loader", "css-loader", "sass-loader"]
+        loaders: ['style-loader', 'css-loader', 'sass-loader']
       }     
     ]
   },
   resolve: {
+    extensions: ['.js', '.vue', '.json'],
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-    },
-    extensions: ['*', '.js', '.vue', '.json']
+      '@': resolve('src')
+    }
   },
   devServer: {
     historyApiFallback: true,
@@ -62,7 +63,7 @@ module.exports = {
   performance: {
     hints: false
   },
-  plugins: [new ExtractTextPlugin("main.css")],
+  plugins: [new ExtractTextPlugin('main.css')],
   devtool: '#eval-source-map'
 }
 
